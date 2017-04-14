@@ -14,7 +14,14 @@ class NewVisitorTest(LiveServerTestCase):
         
         self.browser.get(self.live_server_url)
 
-        self.assertIn('BusWaiting', self.browser.title, "title is " + self.browser.title) 
+        self.assertIn('BusWaiting', self.browser.title, "title is " + self.browser.title)
+        
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('BusWaiting', header_text)
+        
+        dropdownbox = self.browser.find_element_by_id('busStop')
+        dropdownbox.select_by_visible_text('พระจอมเกล้าพระนครเหนือ')
+        
         self.fail('Finish the test!')
 
 if __name__ == '__main__':
