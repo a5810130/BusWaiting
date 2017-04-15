@@ -16,8 +16,8 @@ class NewVisitorTest(LiveServerTestCase):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         
-        '''print(Route.objects.all())
-        print(BusStop.objects.all())'''
+        print(Route.objects.all())
+        print(BusStop.objects.values('name').distinct())
         
         self.browser.get(self.live_server_url)
 
@@ -26,8 +26,18 @@ class NewVisitorTest(LiveServerTestCase):
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('BusWaiting', header_text)
         
-        dropdownbox = self.browser.find_element_by_id('busStop')
-        dropdownbox.select_by_visible_text("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        inputbox = self.browser.find_element_by_name('busStop')
+        inputbox.send_keys("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        inputbox.send_keys(Keys.ENTER)
+        
+        time.sleep(2)
+        
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn('มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ', header_text)
+        
+        inputbox = self.browser.find_element_by_name('busReport')
+        inputbox.send_keys("97")
+        inputbox.send_keys(Keys.ENTER)
         
         self.fail('Finish the test!')
         
@@ -46,6 +56,7 @@ class NewVisitorTest(LiveServerTestCase):
         r97.busstop_set.create(name="กระทรวงสาธารณสุข", bus_terminus=True, create=timezone.now())
         r97.busstop_set.create(name="ท่าน้ำนนท์บุรี", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="โรงเรียนสตรีนนทบุรี", bus_terminus=False, create=timezone.now())
+        r97.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="อนุสาวรีย์ชัยสมรภูมิ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="โรงพยาบาลสงฆ์", bus_terminus=True, create=timezone.now())
