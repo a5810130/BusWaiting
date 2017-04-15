@@ -1,16 +1,23 @@
 from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+import time
+from buswait.models import *
+from django.utils import timezone
 
 class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.create_object()
 
     def tearDown(self):
         self.browser.quit()
 
     def test_can_start_a_list_and_retrieve_it_later(self):
+        
+        '''print(Route.objects.all())
+        print(BusStop.objects.all())'''
         
         self.browser.get(self.live_server_url)
 
@@ -20,9 +27,29 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('BusWaiting', header_text)
         
         dropdownbox = self.browser.find_element_by_id('busStop')
-        dropdownbox.select_by_visible_text('พระจอมเกล้าพระนครเหนือ')
+        dropdownbox.select_by_visible_text("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
         
         self.fail('Finish the test!')
+        
+    def create_object(self):
+        r203 = Route(bus_number="203")
+        r203.save()
+        r203.busstop_set.create(name="ท่าอิฐ", bus_terminus=True, create=timezone.now())
+        r203.busstop_set.create(name="ท่าน้ำนนท์บุรี", bus_terminus=False, create=timezone.now())
+        r203.busstop_set.create(name="โรงเรียนสตรีนนทบุรี", bus_terminus=False, create=timezone.now())
+        r203.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
+        r203.busstop_set.create(name="โรงพยาบาลยันฮี", bus_terminus=False, create=timezone.now())
+        r203.busstop_set.create(name="สนามหลวง", bus_terminus=True, create=timezone.now())
+        r203.save()
+        r97 = Route(bus_number="97")
+        r97.save()
+        r97.busstop_set.create(name="กระทรวงสาธารณสุข", bus_terminus=True, create=timezone.now())
+        r97.busstop_set.create(name="ท่าน้ำนนท์บุรี", bus_terminus=False, create=timezone.now())
+        r97.busstop_set.create(name="โรงเรียนสตรีนนทบุรี", bus_terminus=False, create=timezone.now())
+        r97.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
+        r97.busstop_set.create(name="อนุสาวรีย์ชัยสมรภูมิ", bus_terminus=False, create=timezone.now())
+        r97.busstop_set.create(name="โรงพยาบาลสงฆ์", bus_terminus=True, create=timezone.now())
+        r97.save()
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
