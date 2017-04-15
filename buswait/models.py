@@ -16,6 +16,11 @@ class BusStop(models.Model):
     def __str__(self):
         return self.name
     
+    def previous(self):
+        previous = self.route.busstop_set.filter(id__lt=self.id).order_by('create').last()
+        return previous
+        
+    
 class PassedTime(models.Model):
     busStop = models.ForeignKey(BusStop, on_delete=models.CASCADE)
     time = models.DateTimeField('passed_time')

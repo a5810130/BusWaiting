@@ -27,13 +27,13 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('BusWaiting', header_text)
         
         inputbox = self.browser.find_element_by_name('busStop')
-        inputbox.send_keys("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        inputbox.send_keys("โรงเรียนสตรีนนทบุรี")
         inputbox.send_keys(Keys.ENTER)
         
         time.sleep(2)
         
         header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ', header_text)
+        self.assertIn('โรงเรียนสตรีนนทบุรี', header_text)
         
         inputbox = self.browser.find_element_by_name('busReport')
         inputbox.send_keys("97")
@@ -56,7 +56,6 @@ class NewVisitorTest(LiveServerTestCase):
         r97.busstop_set.create(name="กระทรวงสาธารณสุข", bus_terminus=True, create=timezone.now())
         r97.busstop_set.create(name="ท่าน้ำนนท์บุรี", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="โรงเรียนสตรีนนทบุรี", bus_terminus=False, create=timezone.now())
-        r97.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="อนุสาวรีย์ชัยสมรภูมิ", bus_terminus=False, create=timezone.now())
         r97.busstop_set.create(name="โรงพยาบาลสงฆ์", bus_terminus=True, create=timezone.now())
