@@ -2,6 +2,7 @@ from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.http import HttpRequest
 from django.utils import timezone
+import datetime
 
 from buswait.views import *
 from buswait.models import *
@@ -40,7 +41,7 @@ class RouteModelTest(TestCase):
         self.assertEqual(second_saved_route.bus_number, "second_route")
         
         
-class ModelTest(TestCase):
+class BusStopModelTest(TestCase):
     
     def create_model(self):
         route = Route(bus_number="some route")
@@ -75,3 +76,30 @@ class ModelTest(TestCase):
         first_another_busstop = route2.busstop_set.create(name="first_busstop", bus_terminus=True, create=timezone.now())
         previous_of_first_another = first_another_busstop.previous()
         self.assertNotEqual(previous_of_first_another, second_saved_busstop)
+        
+class PassedTimeModelTest(TestCase):
+    
+    def test_saving_and_retrieving(self):
+        route = Route(bus_number="some route")
+        route.save()
+        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True, create=timezone.now())
+        time = timezone.now()
+        first_passed = busstop.passedtime_set.create(time=time)
+        second_passed = busstop.passedtime_set.create(time=time+datetime.timedelta(days=1))
+
+        saved_time = busstop.passedtime_set.all()
+        self.assertEqual(saved_time.count(), 2)
+        
+        first_saved_time = saved_time[0]
+        second_saved_time = saved_time[1]
+        self.assertEqual(first_saved_time.time, second_saved_time.time-datetime.timedelta(days=1))
+        
+    def test_get_bus_number(self):
+        route = Route(bus_number="some route")
+        route.save()
+        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True, create=timezone.now())
+        first_passed = busstop.passedtime_set.create(time=timezone.now())
+        
+        route_name = first_passed.get_bus_number()
+        self.assertEqual(route_name, "some route")
+    

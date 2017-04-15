@@ -25,5 +25,5 @@ class PassedTime(models.Model):
     busStop = models.ForeignKey(BusStop, on_delete=models.CASCADE)
     time = models.DateTimeField('passed_time')
     
-    def bus_number(self):
+    def get_bus_number(self):
         return self.busStop.route.bus_number
