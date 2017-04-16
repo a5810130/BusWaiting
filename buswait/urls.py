@@ -7,4 +7,5 @@ app_name = 'buswait'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^busStop/$', views.busStopDetail, name='busStopDetail'),
 ]

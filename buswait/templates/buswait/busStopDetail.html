@@ -1,0 +1,29 @@
+<html>
+    <title>{{ busStopName }}</title>
+    <body>
+        <h1>{{ busStopName }}</h1>
+        {% if bus_location_set %}
+            <table id="bus_table">
+            <tr>
+                <th> Bus Number </th>
+                <th> Location </th>
+                <th> Time </th>
+                <th> Report </th>
+            </tr>
+            {% for busStop in bus_location_set %}
+                <tr>
+                    <td> {{busStop.route}} </td>
+                    {% if busStopName == busStop.name %}
+                        <td> - </td>
+                        <td> - </td>
+                    {% else %}
+                        <td> busStop.name </td>
+                        <td> busStop.get_time </td>
+                    {% endif %}
+                    <td> report </td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+    </body>
+</html>

@@ -3,7 +3,7 @@
     <body>
         <h1>BusWaiting App</h1>
         <h2>Your Location</h2>
-        <form action="" method="post">    
+        <form action={% url 'buswait:busStopDetail' %} method="post">    
             {% csrf_token %}
             <input list="busStops" name="busStop" autocomplete="off">
             <datalist id="busStops">

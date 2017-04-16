@@ -19,11 +19,22 @@ class BusStop(models.Model):
     def previous(self):
         previous = self.route.busstop_set.filter(id__lt=self.id).order_by('create').last()
         return previous
+    
+    def get_time(self):
+        return self.passedtime_set.last().time
         
+    def find_bus_coming(self):
+        n = self.passedtime_set.count()
+        previous = self.previous()
+        while True:
+            if previous.passedtime_set.count() > n :
+                return previous
+            else:
+                if previous.bus_terminus == True :
+                    return self
+                else :
+                    previous = previous.previous()
     
 class PassedTime(models.Model):
     busStop = models.ForeignKey(BusStop, on_delete=models.CASCADE)
     time = models.DateTimeField('passed_time')
-    
-    def get_bus_number(self):
-        return self.busStop.route.bus_number

@@ -13,14 +13,25 @@ class IndexTest(TestCase):
     def test_root_url_resolves_to_index_view(self):
         found = resolve('/')
         self.assertEqual(found.func, index)
+        
+    def test_usesd_index_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'buswait/index.html')
 
-    def test_index_returns_correct_html(self):
-        request = HttpRequest()
-        response = index(request)
-        self.assertTrue(response.content.startswith(b'<html>'))
-        self.assertIn(b'<title>BusWaiting App</title>', response.content)
-        self.assertIn(b'<h1>BusWaiting App</h1>', response.content)
-        self.assertTrue(response.content.endswith(b'</html>'))
+
+class BusStopDetailTest(TestCase):
+    
+    def test_root_url_resolves_to_index_view(self):
+        found = resolve('/busStop/')
+        self.assertEqual(found.func, busStopDetail)
+        
+    def test_usesd_index_template(self):
+        response = self.client.get('/busStop/')
+        self.assertTemplateUsed(response, 'buswait/busStopDetail.html')
+        
+    def test_can_save_a_POST_request(self):
+        response = self.client.post('/busStop/', data={'busStop': 'some bus stop'})
+        self.assertIn(b'some bus stop', response.content)
 
 
 class RouteModelTest(TestCase):
@@ -75,7 +86,7 @@ class BusStopModelTest(TestCase):
         route2.save()
         first_another_busstop = route2.busstop_set.create(name="first_busstop", bus_terminus=True, create=timezone.now())
         previous_of_first_another = first_another_busstop.previous()
-        self.assertNotEqual(previous_of_first_another, second_saved_busstop)
+        self.assertEqual(previous_of_first_another, None)
         
 class PassedTimeModelTest(TestCase):
     
@@ -93,13 +104,4 @@ class PassedTimeModelTest(TestCase):
         first_saved_time = saved_time[0]
         second_saved_time = saved_time[1]
         self.assertEqual(first_saved_time.time, second_saved_time.time-datetime.timedelta(days=1))
-        
-    def test_get_bus_number(self):
-        route = Route(bus_number="some route")
-        route.save()
-        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True, create=timezone.now())
-        first_passed = busstop.passedtime_set.create(time=timezone.now())
-        
-        route_name = first_passed.get_bus_number()
-        self.assertEqual(route_name, "some route")
     

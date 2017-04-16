@@ -14,10 +14,15 @@ class NewVisitorTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def check_for_row_in_list_table(self, bus_number):
+        table = self.browser.find_element_by_id('bus_table')
+        columns = table.find_elements_by_tag_name('td')
+        self.assertIn(bus_number, [column.text for column in columns])
+        
     def test_can_start_a_list_and_retrieve_it_later(self):
         
         print(Route.objects.all())
-        print(BusStop.objects.values('name').distinct())
+        print(BusStop.objects.values('name').distinct().filter(bus_terminus=False))
         
         self.browser.get(self.live_server_url)
 
@@ -35,9 +40,8 @@ class NewVisitorTest(LiveServerTestCase):
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('โรงเรียนสตรีนนทบุรี', header_text)
         
-        inputbox = self.browser.find_element_by_name('busReport')
-        inputbox.send_keys("97")
-        inputbox.send_keys(Keys.ENTER)
+        self.check_for_row_in_list_table("97")
+        self.check_for_row_in_list_table("203")
         
         self.fail('Finish the test!')
         
