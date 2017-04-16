@@ -17,11 +17,19 @@ class BusStop(models.Model):
         return self.name
     
     def previous(self):
-        previous = self.route.busstop_set.filter(id__lt=self.id).order_by('create').last()
+        previous = self.route.busstop_set.filter(
+            id__lt=self.id).order_by('create').last()
         return previous
     
     def get_time(self):
         return self.passedtime_set.last().time
+    
+    def add_time(self, time):
+        self.passedtime_set.create(time=time)
+        if self.bus_terminus != True:
+            n = self.passedtime_set.count()
+            if self.previous().passedtime_set.count() < n:
+                self.previous().add_time(time)
         
     def find_bus_coming(self):
         n = self.passedtime_set.count()

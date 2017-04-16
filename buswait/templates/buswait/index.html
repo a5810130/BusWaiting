@@ -7,7 +7,9 @@
             {% csrf_token %}
             <input list="busStops" name="busStop" autocomplete="off">
             <datalist id="busStops">
-                <option value="">
+                {% for busstop in busStop_set %}
+                <option value={{busstop.name}}>
+                {% endfor %}
             </datalist>
             <input type="submit" value="submit">
         </form>

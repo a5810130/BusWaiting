@@ -17,10 +17,10 @@
                         <td> - </td>
                         <td> - </td>
                     {% else %}
-                        <td> busStop.name </td>
-                        <td> busStop.get_time </td>
+                        <td> {{busStop.name}} </td>
+                        <td> {{busStop.get_time}} </td>
                     {% endif %}
-                    <td> report </td>
+                    <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </td>
                 </tr>
             {% endfor %}
             </table>
