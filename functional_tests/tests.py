@@ -43,6 +43,37 @@ class NewVisitorTest(LiveServerTestCase):
         self.check_for_row_in_list_table("97")
         self.check_for_row_in_list_table("203")
         
+        table = self.browser.find_element_by_id('bus_table')
+        link = table.find_element_by_link_text("report")
+        link.click()
+        
+        self.browser.get(self.live_server_url)
+        
+        inputbox = self.browser.find_element_by_name('busStop')
+        inputbox.send_keys("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        inputbox.send_keys(Keys.ENTER)
+        
+        time.sleep(2)
+        
+        self.check_for_row_in_list_table("97")
+        self.check_for_row_in_list_table("203")
+        self.check_for_row_in_list_table("โรงเรียนสตรีนนทบุรี")
+        
+        table = self.browser.find_element_by_id('bus_table')
+        link = table.find_element_by_link_text("report")
+        link.click()
+        
+        self.browser.get(self.live_server_url)
+        
+        inputbox = self.browser.find_element_by_name('busStop')
+        inputbox.send_keys("อนุสาวรีย์ชัยสมรภูมิ")
+        inputbox.send_keys(Keys.ENTER)
+        
+        time.sleep(2)
+        
+        self.check_for_row_in_list_table("97")
+        self.check_for_row_in_list_table("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        
         self.fail('Finish the test!')
         
     def create_object(self):
