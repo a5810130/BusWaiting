@@ -57,8 +57,8 @@ class BusStopModelTest(TestCase):
     def create_model(self):
         route = Route(bus_number="some route")
         route.save()
-        first_busstop = route.busstop_set.create(name="first_busstop", bus_terminus=True, create=timezone.now())
-        second_busstop = route.busstop_set.create(name="second_busstop", bus_terminus=False, create=timezone.now())
+        first_busstop = route.busstop_set.create(name="first_busstop", bus_terminus=True)
+        second_busstop = route.busstop_set.create(name="second_busstop", bus_terminus=False)
         route.save()
         return route
     
@@ -84,7 +84,7 @@ class BusStopModelTest(TestCase):
         
         route2 = Route(bus_number="another route")
         route2.save()
-        first_another_busstop = route2.busstop_set.create(name="first_busstop", bus_terminus=True, create=timezone.now())
+        first_another_busstop = route2.busstop_set.create(name="first_busstop", bus_terminus=True)
         previous_of_first_another = first_another_busstop.previous()
         self.assertEqual(previous_of_first_another, None)
         
@@ -93,7 +93,7 @@ class PassedTimeModelTest(TestCase):
     def test_saving_and_retrieving(self):
         route = Route(bus_number="some route")
         route.save()
-        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True, create=timezone.now())
+        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True)
         time = timezone.now()
         first_passed = busstop.passedtime_set.create(time=time)
         second_passed = busstop.passedtime_set.create(time=time+datetime.timedelta(days=1))

@@ -10,7 +10,6 @@ class Route(models.Model):
 class BusStop(models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
-    create = models.DateTimeField('create')
     bus_terminus = models.BooleanField()
     
     def __str__(self):
@@ -18,7 +17,7 @@ class BusStop(models.Model):
     
     def previous(self):
         previous = self.route.busstop_set.filter(
-            id__lt=self.id).order_by('create').last()
+            id__lt=self.id).order_by('id').last()
         return previous
     
     def get_time(self):
