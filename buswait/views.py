@@ -10,19 +10,15 @@ def index(request):
     return render(request, 'buswait/index.html', data)
 
 def busStopDetail(request):
-    busStopName=""
+    busStopName = ""
     bus_location_set = set()
     
-    if request.method == 'POST':
-        busStopName = request.POST['busStop']
+    if request.method == 'GET':
+        busStopName = request.GET['busStop']
         try:
             busStop_set = BusStop.objects.filter(name=busStopName)
-            print(busStop_set)
             for busStop in busStop_set:
-                bus_coming = busStop.find_bus_coming()
-                print(bus_coming)
-                bus_location_set.add(bus_coming)
-                print(bus_location_set)
+                bus_location_set.add(busStop)
         except :
             pass
         
@@ -33,3 +29,4 @@ def report_bus(request, busStop_id):
     busStop = get_object_or_404(BusStop, id=busStop_id)
     time = timezone.now()
     busStop.add_time(time)
+    return HttpResponseRedirect(reverse('buswait:index',))

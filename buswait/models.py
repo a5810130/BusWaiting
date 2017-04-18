@@ -26,7 +26,7 @@ class BusStop(models.Model):
     
     def add_time(self, time):
         self.passedtime_set.create(time=time)
-        if self.bus_terminus != True:
+        if (self.bus_terminus != True):
             n = self.passedtime_set.count()
             if self.previous().passedtime_set.count() < n:
                 self.previous().add_time(time)
