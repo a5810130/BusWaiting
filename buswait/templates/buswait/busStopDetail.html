@@ -20,10 +20,11 @@
                         <td> {{busStop.find_bus_coming.name}} </td>
                         <td> {{busStop.find_bus_coming.get_time}} </td>
                     {% endif %}
-                    <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </td>
+                    <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
                 </tr>
             {% endfor %}
             </table>
         {% endif %}
+        <a href={% url 'buswait:index' %}>back</a>
     </body>
 </html>

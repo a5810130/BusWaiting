@@ -47,7 +47,13 @@ class NewVisitorTest(LiveServerTestCase):
         link = table.find_element_by_link_text("report")
         link.click()
         
-        self.browser.get(self.live_server_url)
+        time.sleep(1)
+        
+        linkset = self.browser.find_element_by_tag_name('body')
+        backlink = linkset.find_element_by_link_text("back")
+        backlink.click()
+        
+        time.sleep(1)
         
         inputbox = self.browser.find_element_by_name('busStop')
         inputbox.send_keys("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
@@ -63,7 +69,13 @@ class NewVisitorTest(LiveServerTestCase):
         link = table.find_element_by_link_text("report")
         link.click()
         
-        self.browser.get(self.live_server_url)
+        time.sleep(1)
+         
+        linkset = self.browser.find_element_by_tag_name('body')
+        backlink = linkset.find_element_by_link_text("back")
+        backlink.click()
+        
+        time.sleep(1)
         
         inputbox = self.browser.find_element_by_name('busStop')
         inputbox.send_keys("อนุสาวรีย์ชัยสมรภูมิ")
