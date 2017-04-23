@@ -19,12 +19,12 @@ class NewVisitorTest(LiveServerTestCase):
         columns = table.find_elements_by_tag_name('td')
         self.assertIn(bus_number, [column.text for column in columns])
         
-    def choose_busStop_view_report_and_back(self, busStop, views, report):
+    def choose_busStop_view_report_and_back(self, busStop, views, report=None):
         inputbox = self.browser.find_element_by_name('busStop')
         inputbox.send_keys(busStop)
         inputbox.send_keys(Keys.ENTER)
         
-        time.sleep(2)
+        time.sleep(1)
         
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn(busStop, header_text)
@@ -32,8 +32,8 @@ class NewVisitorTest(LiveServerTestCase):
         for view in views:
             self.check_for_row_in_list_table(view)
             
-        if (report == True):
-            table = self.browser.find_element_by_id('bus_table')
+        if (report != None):
+            table = self.browser.find_element_by_id(report)
             link = table.find_element_by_link_text("report")
             link.click()
         
@@ -62,19 +62,38 @@ class NewVisitorTest(LiveServerTestCase):
         
         self.choose_busStop_view_report_and_back(
             "โรงเรียนสตรีนนทบุรี",
-            ["97","203"], True)
-        
+            ["97"], 
+            "97")
         self.choose_busStop_view_report_and_back(
             "อนุสาวรีย์ชัยสมรภูมิ", 
-            ["97","โรงเรียนสตรีนนทบุรี"], False)
-    
+            ["97","โรงเรียนสตรีนนทบุรี"])
         self.choose_busStop_view_report_and_back(
             "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", 
-            ["97","203","โรงเรียนสตรีนนทบุรี"], True)
-        
+            ["97","โรงเรียนสตรีนนทบุรี"],
+            "97")
         self.choose_busStop_view_report_and_back(
             "อนุสาวรีย์ชัยสมรภูมิ", 
-            ["97","มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ"], True)
+            ["97","มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ"], 
+            "97")
+        self.choose_busStop_view_report_and_back(
+            "ท่าน้ำนนท์บุรี", 
+            ["97"], 
+            "97")
+        
+        self.choose_busStop_view_report_and_back(
+            "ท่าน้ำนนท์บุรี",
+            ["203"], 
+            "203")
+        self.choose_busStop_view_report_and_back(
+            "โรงเรียนสตรีนนทบุรี",
+            ["203","ท่าน้ำนนท์บุรี"])
+        self.choose_busStop_view_report_and_back(
+            "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ",
+            ["203","ท่าน้ำนนท์บุรี"],
+            "203")
+        self.choose_busStop_view_report_and_back(
+            "โรงเรียนสตรีนนทบุรี",
+            ["203","-"])
         
         self.fail('Finish the test!')
         

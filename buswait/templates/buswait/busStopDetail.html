@@ -11,7 +11,7 @@
                 <th width="10%"> Report </th>
             </tr>
             {% for busStop in bus_location_set %}
-                <tr>
+                <tr id={{busStop.route}}>
                     <td> {{busStop.route}} </td>
                     {% if busStopName == busStop.find_bus_coming.name %}
                         <td> - </td>

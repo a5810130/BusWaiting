@@ -26,8 +26,20 @@ class BusStop(models.Model):
             time__gte=datetime.date.today()).last().time
     
     def get_time_set(self):
-        return self.passedtime_set.filter(
+        first = self.route.busstop_set.first()
+        n = first.passedtime_set.count()
+        if n > 5 :
+            time_set = set()
+            i = 0
+            for time in self.passedtime_set.all():
+                if i < n-5:
+                    i += 1
+                else:
+                    time_set.add(time)
+        else:
+            time_set = self.passedtime_set.filter(
             time__gte=datetime.date.today())
+        return time_set
     
     def add_time(self, time):
         self.passedtime_set.create(time=time)
