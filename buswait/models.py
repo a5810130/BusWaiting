@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Route(models.Model):
@@ -21,11 +22,17 @@ class BusStop(models.Model):
         return previous
     
     def get_time(self):
-        return self.passedtime_set.last().time
+        return self.passedtime_set.filter(
+            time__gte=datetime.date.today()).last().time
+    
+    def get_time_set(self):
+        return self.passedtime_set.filter(
+            time__gte=datetime.date.today())
     
     def add_time(self, time):
         self.passedtime_set.create(time=time)
-        if (self.bus_terminus != True):
+        first = self.route.busstop_set.first()
+        if (self.name != first.name):
             n = self.passedtime_set.count()
             if self.previous().passedtime_set.count() < n:
                 self.previous().add_time(time)

@@ -9,7 +9,9 @@ def index(request):
     busStop_set = BusStop.objects.values(
         'name').distinct().filter(
             bus_terminus=False)
-    data = {'busStop_set':busStop_set,}
+    bus_set = Route.objects.values(
+        'bus_number').distinct()
+    data = {'busStop_set':busStop_set,'bus_set':bus_set}
     return render(request, 'buswait/index.html', data)
 
 def busStopDetail(request):
@@ -29,9 +31,25 @@ def busStopDetail(request):
                'bus_location_set':bus_location_set}
     return render(request, 'buswait/busStopDetail.html', context)
 
+def busDetail(request):
+    busNumber = ""
+    busStop_set = set()
+    
+    if request.method == 'GET':
+        busNumber = request.GET['busNumber']
+        try:
+            bus = Route.objects.filter(bus_number=busNumber).first()
+            busStop_set = bus.busstop_set.all()
+            print(busStop_set)
+        except :
+            pass
+    context = {'busNumber':busNumber, 
+               'busStop_set':busStop_set}
+    return render(request, 'buswait/busDetail.html', context)
+
 def report_bus(request, busStop_id):
     busStop = get_object_or_404(BusStop, id=busStop_id)
     time = timezone.now()
     busStop.add_time(time)
     urlredirect = reverse('buswait:busStopDetail')+'?busStop='+busStop.name
-    return HttpResponseRedirect(urlredirect)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

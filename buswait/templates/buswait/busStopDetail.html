@@ -3,12 +3,12 @@
     <body>
         <h1>{{ busStopName }}</h1>
         {% if bus_location_set %}
-            <table id="bus_table">
+            <table id="bus_table" width="50%">
             <tr>
-                <th> Bus Number </th>
+                <th width="10%"> Bus <br> Number </th>
                 <th> Location </th>
-                <th> Time </th>
-                <th> Report </th>
+                <th width="10%"> Time </th>
+                <th width="10%"> Report </th>
             </tr>
             {% for busStop in bus_location_set %}
                 <tr>
@@ -18,7 +18,7 @@
                         <td> - </td>
                     {% else %}
                         <td> {{busStop.find_bus_coming.name}} </td>
-                        <td> {{busStop.find_bus_coming.get_time}} </td>
+                        <td> {{busStop.find_bus_coming.get_time|date:"H:i"}} </td>
                     {% endif %}
                     <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
                 </tr>

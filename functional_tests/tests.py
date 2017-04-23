@@ -19,72 +19,62 @@ class NewVisitorTest(LiveServerTestCase):
         columns = table.find_elements_by_tag_name('td')
         self.assertIn(bus_number, [column.text for column in columns])
         
+    def choose_busStop_view_report_and_back(self, busStop, views, report):
+        inputbox = self.browser.find_element_by_name('busStop')
+        inputbox.send_keys(busStop)
+        inputbox.send_keys(Keys.ENTER)
+        
+        time.sleep(2)
+        
+        header_text = self.browser.find_element_by_tag_name('h1').text
+        self.assertIn(busStop, header_text)
+        
+        for view in views:
+            self.check_for_row_in_list_table(view)
+            
+        if (report == True):
+            table = self.browser.find_element_by_id('bus_table')
+            link = table.find_element_by_link_text("report")
+            link.click()
+        
+            time.sleep(1)
+        
+        linkset = self.browser.find_element_by_tag_name('body')
+        backlink = linkset.find_element_by_link_text("back")
+        backlink.click()
+        
+        time.sleep(1)
+    
     def test_can_start_a_list_and_retrieve_it_later(self):
         
         print(Route.objects.all())
-        print(BusStop.objects.values('name').distinct().filter(bus_terminus=False))
+        print(BusStop.objects.values(
+            'name').distinct().filter(
+            bus_terminus=False))
         
         self.browser.get(self.live_server_url)
 
-        self.assertIn('BusWaiting', self.browser.title, "title is " + self.browser.title)
+        self.assertIn('BusWaiting', self.browser.title, 
+                      "title is " + self.browser.title)
         
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn('BusWaiting', header_text)
         
-        inputbox = self.browser.find_element_by_name('busStop')
-        inputbox.send_keys("โรงเรียนสตรีนนทบุรี")
-        inputbox.send_keys(Keys.ENTER)
+        self.choose_busStop_view_report_and_back(
+            "โรงเรียนสตรีนนทบุรี",
+            ["97","203"], True)
         
-        time.sleep(2)
+        self.choose_busStop_view_report_and_back(
+            "อนุสาวรีย์ชัยสมรภูมิ", 
+            ["97","โรงเรียนสตรีนนทบุรี"], False)
+    
+        self.choose_busStop_view_report_and_back(
+            "มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ", 
+            ["97","203","โรงเรียนสตรีนนทบุรี"], True)
         
-        header_text = self.browser.find_element_by_tag_name('h1').text
-        self.assertIn('โรงเรียนสตรีนนทบุรี', header_text)
-        
-        self.check_for_row_in_list_table("97")
-        self.check_for_row_in_list_table("203")
-        
-        table = self.browser.find_element_by_id('bus_table')
-        link = table.find_element_by_link_text("report")
-        link.click()
-        
-        time.sleep(1)
-        
-        linkset = self.browser.find_element_by_tag_name('body')
-        backlink = linkset.find_element_by_link_text("back")
-        backlink.click()
-        
-        time.sleep(1)
-        
-        inputbox = self.browser.find_element_by_name('busStop')
-        inputbox.send_keys("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
-        inputbox.send_keys(Keys.ENTER)
-        
-        time.sleep(2)
-        
-        self.check_for_row_in_list_table("97")
-        self.check_for_row_in_list_table("203")
-        self.check_for_row_in_list_table("โรงเรียนสตรีนนทบุรี")
-        
-        table = self.browser.find_element_by_id('bus_table')
-        link = table.find_element_by_link_text("report")
-        link.click()
-        
-        time.sleep(1)
-         
-        linkset = self.browser.find_element_by_tag_name('body')
-        backlink = linkset.find_element_by_link_text("back")
-        backlink.click()
-        
-        time.sleep(1)
-        
-        inputbox = self.browser.find_element_by_name('busStop')
-        inputbox.send_keys("อนุสาวรีย์ชัยสมรภูมิ")
-        inputbox.send_keys(Keys.ENTER)
-        
-        time.sleep(2)
-        
-        self.check_for_row_in_list_table("97")
-        self.check_for_row_in_list_table("มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ")
+        self.choose_busStop_view_report_and_back(
+            "อนุสาวรีย์ชัยสมรภูมิ", 
+            ["97","มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าพระนครเหนือ"], True)
         
         self.fail('Finish the test!')
         

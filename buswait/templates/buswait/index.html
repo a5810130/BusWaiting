@@ -2,7 +2,7 @@
     <title>BusWaiting App</title>
     <body>
         <h1>BusWaiting App</h1>
-        <h2>Your Location</h2>
+        <h2>Location</h2>
         <form action={% url 'buswait:busStopDetail' %} method="get">    
             <input list="busStops" name="busStop" autocomplete="off">
             <datalist id="busStops">
@@ -12,6 +12,15 @@
             </datalist>
             <input type="submit" value="submit">
         </form>
+        <h2>Bus Number</h2>
+        <form action={% url 'buswait:busDetail' %} method="get">    
+            <input list="busNumbers" name="busNumber" autocomplete="off">
+            <datalist id="busNumbers">
+                {% for bus in bus_set %}
+                <option value={{bus.bus_number}}>
+                {% endfor %}
+            </datalist>
+            <input type="submit" value="submit">
         </from>
     </body>
 </html>
