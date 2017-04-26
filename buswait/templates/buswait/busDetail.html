@@ -5,16 +5,17 @@
         {% if busStop_set %}
             <table id="busStop_table" width="50%">
             <tr>
-                <th width="40%"> Bus Stop </th>
+                <th> Bus Stop </th>
+                <th width="10%"> time </th>
+                <th width="10%"> report </th>
             </tr>
             {% for busStop in busStop_set %}
                 <tr>
                     <td> {{busStop.name}} </td>
-                    {% if busStop.get_time_set %}
-                        {% for passed in busStop.get_time_set %}
-                            <td> {{passed.time|date:"H:i"}} </td>
-                        {% endfor %}
-                    {% else %}
+                    {% if location.is_today %}
+                        <td> {{location.time|date:"H:i"}} </td>
+                    {% else %} 
+                        <td> - </td>
                     {% endif %}
                     <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
                 </tr>

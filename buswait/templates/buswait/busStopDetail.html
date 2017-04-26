@@ -2,26 +2,41 @@
     <title>{{ busStopName }}</title>
     <body>
         <h1>{{ busStopName }}</h1>
-        {% if bus_location_set %}
+        {% if busStop_set %}
             <table id="bus_table" width="50%">
             <tr>
-                <th width="10%"> Bus <br> Number </th>
-                <th> Location </th>
-                <th width="10%"> Time </th>
-                <th width="10%"> Report </th>
+                <th width="10%">    Bus <br> Number     </th>
+                <th>                Location            </th>
+                <th width="10%">    Time                </th>
+                <th width="10%">    Report              </th>
             </tr>
-            {% for busStop in bus_location_set %}
+            {% for busStop in busStop_set %}
+                {% for location in busStop.get_previous %}
+                
                 <tr id={{busStop.route}}>
-                    <td> {{busStop.route}} </td>
-                    {% if busStopName == busStop.find_bus_coming.name %}
-                        <td> - </td>
-                        <td> - </td>
-                    {% else %}
-                        <td> {{busStop.find_bus_coming.name}} </td>
-                        <td> {{busStop.find_bus_coming.get_time|date:"H:i"}} </td>
+                    
+                    {% if forloop.counter == 1 %}
+                        <td rowspan={{busStop.get_previous|length}}>
+                        {{busStop.route}} </td>
                     {% endif %}
-                    <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
+                    
+                        <td id={{location.name}}> {{location.name}} </td>
+                        
+                        <td id={{location.name}}_time>
+                    {% if location.is_today %}
+                        {{location.time|date:"H:i"}} 
+                    {% else %} 
+                        - 
+                    {% endif %}
+                        </td>
+                        
+                    {% if forloop.counter == 1 %}
+                        <td rowspan={{busStop.get_previous|length}}> 
+                        <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
+                    {% endif %}
+            
                 </tr>
+                {% endfor %}
             {% endfor %}
             </table>
         {% endif %}

@@ -30,8 +30,23 @@ class BusStopDetailTest(TestCase):
         self.assertTemplateUsed(response, 'buswait/busStopDetail.html')
         
     def test_can_save_a_POST_request(self):
-        response = self.client.post('/busStop/', data={'busStop': 'some bus stop'})
-        self.assertIn(b'some bus stop', response.content)
+        response = self.client.get('/busStop/', data={'busStop': 'somebusstop'})
+        self.assertIn(b'somebusstop', response.content)
+
+
+class BusDetailTest(TestCase):
+    
+    def test_root_url_resolves_to_index_view(self):
+        found = resolve('/bus/')
+        self.assertEqual(found.func, busDetail)
+        
+    def test_usesd_index_template(self):
+        response = self.client.get('/bus/')
+        self.assertTemplateUsed(response, 'buswait/busDetail.html')
+        
+    def test_can_save_a_POST_request(self):
+        response = self.client.get('/bus/', data={'busNumber': 'somebus'})
+        self.assertIn(b'somebus', response.content)
 
 
 class RouteModelTest(TestCase):
@@ -57,8 +72,8 @@ class BusStopModelTest(TestCase):
     def create_model(self):
         route = Route(bus_number="some route")
         route.save()
-        first_busstop = route.busstop_set.create(name="first_busstop", bus_terminus=True)
-        second_busstop = route.busstop_set.create(name="second_busstop", bus_terminus=False)
+        first_busstop = route.busstop_set.create(name="first_busstop")
+        second_busstop = route.busstop_set.create(name="second_busstop")
         route.save()
         return route
     
@@ -79,29 +94,12 @@ class BusStopModelTest(TestCase):
         saved_busstop = route.busstop_set.all()
         first_saved_busstop = saved_busstop[0]
         second_saved_busstop = saved_busstop[1]
-        previous_of_second = second_saved_busstop.previous()
-        self.assertEqual(first_saved_busstop, previous_of_second)
+        previous_set_of_second = second_saved_busstop.get_previous()
+        self.assertEqual(previous_set_of_second.count(), 2)
+        self.assertIn(first_saved_busstop, previous_set_of_second)
         
         route2 = Route(bus_number="another route")
         route2.save()
-        first_another_busstop = route2.busstop_set.create(name="first_busstop", bus_terminus=True)
-        previous_of_first_another = first_another_busstop.previous()
-        self.assertEqual(previous_of_first_another, None)
-        
-class PassedTimeModelTest(TestCase):
-    
-    def test_saving_and_retrieving(self):
-        route = Route(bus_number="some route")
-        route.save()
-        busstop = route.busstop_set.create(name="some_busstop", bus_terminus=True)
-        time = timezone.now()
-        first_passed = busstop.passedtime_set.create(time=time)
-        second_passed = busstop.passedtime_set.create(time=time+datetime.timedelta(days=1))
-
-        saved_time = busstop.passedtime_set.all()
-        self.assertEqual(saved_time.count(), 2)
-        
-        first_saved_time = saved_time[0]
-        second_saved_time = saved_time[1]
-        self.assertEqual(first_saved_time.time, second_saved_time.time-datetime.timedelta(days=1))
-    
+        first_another_busstop = route2.busstop_set.create(name="first_busstop")
+        previous_of_first_another = first_another_busstop.get_previous()
+        self.assertEqual(previous_of_first_another.count(), 1)
