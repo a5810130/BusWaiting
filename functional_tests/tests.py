@@ -63,7 +63,6 @@ class NewVisitorTest(LiveServerTestCase):
         
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn("โรงเรียนสตรีนนทบุรี", header_text)
-        
         timetext = self.browser.find_element_by_id('ท่าน้ำนนท์บุรี_time')
         self.assertNotEqual(timetext, "-")
         

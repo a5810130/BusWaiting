@@ -1,9 +1,11 @@
 <html>
     <title>{{ busStopName }}</title>
+    <link href="/static/theme.css" rel="stylesheet">
     <body>
         <h1>{{ busStopName }}</h1>
         {% if busStop_set %}
-            <table id="bus_table" width="50%">
+            <div class="datagrid">
+            <table align="center" id="bus_table">
             <tr>
                 <th width="10%">    Bus <br> Number     </th>
                 <th>                Location            </th>
@@ -39,7 +41,8 @@
                 {% endfor %}
             {% endfor %}
             </table>
+            </div>
+            <a  href={% url 'buswait:index' %}>back</a>
         {% endif %}
-        <a href={% url 'buswait:index' %}>back</a>
     </body>
 </html>
