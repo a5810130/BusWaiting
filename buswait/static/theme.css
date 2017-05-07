@@ -130,3 +130,11 @@ a:hover {
     background-color: #004b63;
     text-decoration: none;
 }
+
+.hyperlink {
+    cursor: pointer;
+}
+
+.hyperlink:hover{
+    background-color: #DDD;
+}

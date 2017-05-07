@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.utils import timezone 
 from django.urls import reverse
+import datetime
 
 from buswait.models import *
 
@@ -14,7 +15,6 @@ def index(request):
     return render(request, 'buswait/index.html', data)
 
 def busStopDetail(request):
-    
     busStopName = ""
     busStop_set = set()
     
@@ -45,6 +45,8 @@ def busDetail(request):
 
 def report_bus(request, busStop_id):
     busStop = get_object_or_404(BusStop, id=busStop_id)
-    busStop.time = timezone.now()
+    now = timezone.localtime(timezone.now())
+    print(timezone.now())
+    busStop.time = now
     busStop.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

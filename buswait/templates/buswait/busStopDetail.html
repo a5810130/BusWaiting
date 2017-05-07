@@ -1,11 +1,13 @@
-<html>
-    <title>{{ busStopName }}</title>
-    <link href="/static/theme.css" rel="stylesheet">
-    <body>
-        <h1>{{ busStopName }}</h1>
-        {% if busStop_set %}
-            <div class="datagrid">
-            <table align="center" id="bus_table">
+{% extends 'buswait/base.html' %}
+
+{% block title %}{{ busStopName }}-{% endblock %}
+
+{% block header %}{{ busStopName }}{% endblock %}
+
+{% block table %}
+    {% if busStop_set %}
+    <div class="datagrid">
+        <table align="center" id="bus_table">
             <tr>
                 <th width="10%">    Bus <br> Number     </th>
                 <th>                Location            </th>
@@ -18,7 +20,9 @@
                 <tr id={{busStop.route}}>
                     
                     {% if forloop.counter == 1 %}
-                        <td rowspan={{busStop.get_previous|length}}>
+                        <td rowspan={{busStop.get_previous|length}} 
+                            class="hyperlink"
+                            onclick="location.href='{% url 'buswait:busDetail' %}?busNumber={{busStop.route}}'">
                         {{busStop.route}} </td>
                     {% endif %}
                     
@@ -41,8 +45,7 @@
                 {% endfor %}
             {% endfor %}
             </table>
-            </div>
-            <a  href={% url 'buswait:index' %}>back</a>
-        {% endif %}
-    </body>
-</html>
+        </div>
+        <a href={% url 'buswait:index' %}>back</a>
+    {% endif %}
+{% endblock %}

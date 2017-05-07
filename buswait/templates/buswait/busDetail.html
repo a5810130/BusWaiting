@@ -1,11 +1,13 @@
-<html>
-    <title>{{ busNumber }}</title>
-    <link href="/static/theme.css" rel="stylesheet">
-    <body>
-        <h1>{{ busNumber }}</h1>
-        {% if busStop_set %}
-            <div class="datagrid">
-            <table align="center" id="busStop_table">
+{% extends 'buswait/base.html' %}
+
+{% block title %}{{ busNumber }}-{% endblock %}
+
+{% block header %}{{ busNumber }}{% endblock %}
+
+{% block table %}
+    {% if busStop_set %}
+    <div class="datagrid">
+        <table align="center" id="busStop_table">
             <tr>
                 <th> Bus Stop </th>
                 <th width="10%"> time </th>
@@ -13,7 +15,8 @@
             </tr>
             {% for busStop in busStop_set %}
                 <tr>
-                    <td> {{busStop.name}} </td>
+                    <td class="hyperlink"
+                        onclick="location.href='{% url 'buswait:busStopDetail' %}?busStop={{busStop.name}}'"> {{busStop.name}} </td>
                     {% if busStop.is_today %}
                         <td> {{busStop.time|date:"H:i"}} </td>
                     {% else %} 
@@ -22,9 +25,10 @@
                     <td> <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
                 </tr>
             {% endfor %}
-            </table>
-            </div>
-        {% endif %}
-        <a href={% url 'buswait:index' %}>back</a>
-    </body>
-</html>
+        </table>
+    </div>
+    {% endif %}
+    <a href={% url 'buswait:index' %}>back</a>
+{% endblock %}
+
+{% block back %} <a href={% url 'buswait:index' %}>back</a> {% endblock %}

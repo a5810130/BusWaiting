@@ -1,0 +1,12 @@
+{% extends 'buswait/base.html' %}
+{% block title %}About-{% endblock %}
+{% block header %}About{% endblock %}
+{% block detail %}
+    App สำหรับบอกเวลาที่รถประจำทางผ่านป้าย เพื่อให้สามารถคาดการณ์เวลาที่ใช้รอรถได้
+    <h1> Feture </h1>
+    <li> สามารถ report เวลามีรถผ่านเพื่อให้ผู้ใช้คนอื่นทราบ </li>
+    <li> ค้นหาป้ายที่ต้องการได้อย่างแม่นยำ </li>
+    <li> ค้นหาได้ทั้งป้ายและรถประจำทาง </li>
+    <li> รีเช็ตข้อมูลทุกวันเพื่อป้องกันการสับสน </li>
+    <a href={% url 'buswait:index' %}>back</a>
+{% endblock %}
