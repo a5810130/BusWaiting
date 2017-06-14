@@ -45,8 +45,6 @@ def busDetail(request):
 
 def report_bus(request, busStop_id):
     busStop = get_object_or_404(BusStop, id=busStop_id)
-    now = timezone.localtime(timezone.now())
-    print(timezone.now())
-    busStop.time = now
+    busStop.time = timezone.now()
     busStop.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
