@@ -10,6 +10,7 @@
         <table align="center" id="bus_table">
             <tr>
                 <th width="10%">    Bus <br> Number     </th>
+				<th width="10%">    Direction     		</th>
                 <th>                Location            </th>
                 <th width="10%">    Time                </th>
                 <th width="10%">    Report              </th>
@@ -24,6 +25,8 @@
                             class="hyperlink"
                             onclick="location.href='{% url 'buswait:busDetail' %}?busNumber={{busStop.route}}'">
                         {{busStop.route}} </td>
+						<td rowspan={{busStop.get_previous|length}} >
+                        {{busStop.route.busstop_set.last}} </td>
                     {% endif %}
                     
                         <td id={{location.name}}> {{location.name}} </td>

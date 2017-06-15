@@ -5,6 +5,7 @@
 {% block header %}{{ busNumber }}{% endblock %}
 
 {% block table %}
+	<h2> {{busStop_set.first}} - {{busStop_set.last}} </h2>
     {% if busStop_set %}
     <div class="datagrid">
         <table align="center" id="busStop_table">
