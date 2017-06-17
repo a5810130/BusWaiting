@@ -5,6 +5,11 @@
 {% block header %}{{ busStopName }}{% endblock %}
 
 {% block table %}
+	<form method="get">
+	<input type="hidden" name="busStop" value={{busStopName}}>
+	Filter: <input type="text" name="filter">
+	<input type="submit" value="Apply">
+	</form>
     {% if busStop_set %}
     <div class="datagrid">
         <table align="center" id="bus_table">
@@ -16,6 +21,7 @@
                 <th width="10%">    Report              </th>
             </tr>
             {% for busStop in busStop_set %}
+				{# if  #}
                 {% for location in busStop.get_previous %}
                 
                 <tr id={{busStop.route}}>
@@ -49,6 +55,8 @@
             {% endfor %}
             </table>
         </div>
-        <a href={% url 'buswait:index' %}>back</a>
+	{% else %}
+		<p>ไม่พบข้อมูล</p>
     {% endif %}
+		<a href={% url 'buswait:index' %}>back</a>
 {% endblock %}

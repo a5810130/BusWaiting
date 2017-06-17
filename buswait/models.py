@@ -28,4 +28,10 @@ class BusStop(models.Model):
 			return timezone.now().date() == self.time.date()
 		except:
 			return False
-    
+			
+	def busFilter(self, filter):
+		nexts = self.route.busstop_set.filter(id__gt=self.id)
+		for nextBusStop in nexts:
+			if (nextBusStop.name == filter):
+				return True
+		return False

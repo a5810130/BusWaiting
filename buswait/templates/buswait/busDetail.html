@@ -17,7 +17,7 @@
             {% for busStop in busStop_set %}
                 <tr>
                     <td class="hyperlink"
-                        onclick="location.href='{% url 'buswait:busStopDetail' %}?busStop={{busStop.name}}'"> {{busStop.name}} </td>
+                        onclick="location.href='{% url 'buswait:busStopDetail' %}?busStop={{busStop.name}}&filter='"> {{busStop.name}} </td>
                     {% if busStop.is_today %}
                         <td> {{busStop.time|date:"H:i"}} </td>
                     {% else %} 
