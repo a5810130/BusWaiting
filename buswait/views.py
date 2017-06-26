@@ -15,6 +15,7 @@ def index(request):
 
 	
 def busStopDetail(request):
+	busStop_datalist = BusStop.objects.values('name').distinct()
 	busStopName = ''
 	busStop_set = set()
 	filter = ''
@@ -24,7 +25,6 @@ def busStopDetail(request):
 		filter = request.GET['filter']
 		busStop_set = BusStop.objects.filter(name=busStopName)
 		if (filter != ""):
-			print("A")
 			temp = []
 			for busStop in busStop_set:
 				if (busStop.busFilter(filter) == True):
@@ -33,7 +33,8 @@ def busStopDetail(request):
 	except:
 		pass
 		
-	context = {'busStopName': busStopName, 'busStop_set': busStop_set}
+	context = {	'busStopName': busStopName, 'busStop_set': busStop_set, 
+				'filter': filter, 'busStop_datalist': busStop_datalist}
 	return render(request, 'buswait/busStopDetail.html', context)
 
 

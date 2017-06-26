@@ -7,15 +7,26 @@
 {% block table %}
 	<form method="get">
 	<input type="hidden" name="busStop" value={{busStopName}}>
-	Filter: <input type="text" name="filter">
+	{% if filter %}
+		<h2> to {{filter}} </h2>
+	{% endif %}
+	Filter: <input type="text" name="filter" list="filter">
+	<datalist id="filter">
+		{% if busStop_datalist %}
+			{% for busstop in busStop_datalist %}
+				<option value={{busstop.name}}>
+			{% endfor %}
+		{% endif %}
+	</datalist>
 	<input type="submit" value="Apply">
+	<button onclick="location.href='' type="button"> Clear </button>
 	</form>
     {% if busStop_set %}
     <div class="datagrid">
         <table align="center" id="bus_table">
             <tr>
                 <th width="10%">    Bus <br> Number     </th>
-				<th width="10%">    Direction     		</th>
+				<th width="20%">    Direction     		</th>
                 <th>                Location            </th>
                 <th width="10%">    Time                </th>
                 <th width="10%">    Report              </th>
