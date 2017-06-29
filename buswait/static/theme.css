@@ -75,11 +75,7 @@ body {
     text-decoration: none;
     font: 12px Arial, Helvetica, sans-serif;
 }
-.form-style-9 ul li input[type="button"]:hover,
-.form-style-9 ul li input[type="submit"]:hover {
-    background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
-    background-color: #28739E;
-}
+
 
 
 .datagrid table {
@@ -116,17 +112,33 @@ body {
     font-size: 16px;
     font-weight: normal;
 }
-
-a {
+input[type="submit"] {
+	font-size: 16px;
     color: #FFFFFF;
-    padding: 8px 12px;
+    padding: 8px 20px;
+	border:0 none;
     margin: 10px;
     display: inline-block;
     background-color: #006687;
     text-decoration: none;
     box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
 }
-a:hover {
+input[type="submit"]:hover {
+	cursor:pointer;
+    background-color: #004b63;
+    text-decoration: none;
+}
+a.button {
+    color: #FFFFFF;
+    padding: 8px 20px;
+    margin: 10px;
+    display: inline-block;
+    background-color: #006687;
+    text-decoration: none;
+    box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+}
+a.button:hover {
+	cursor:pointer;
     background-color: #004b63;
     text-decoration: none;
 }

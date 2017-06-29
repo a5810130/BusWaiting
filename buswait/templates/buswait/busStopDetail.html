@@ -19,7 +19,7 @@
 		{% endif %}
 	</datalist>
 	<input type="submit" value="Apply">
-	<button onclick="location.href='' type="button"> Clear </button>
+	<a class="button" onclick="location.href='' type="button"> Clear </a>
 	</form>
     {% if busStop_set %}
     <div class="datagrid">
@@ -32,7 +32,6 @@
                 <th width="10%">    Report              </th>
             </tr>
             {% for busStop in busStop_set %}
-				{# if  #}
                 {% for location in busStop.get_previous %}
                 
                 <tr id={{busStop.route}}>
@@ -58,7 +57,7 @@
                         
                     {% if forloop.counter == 1 %}
                         <td rowspan={{busStop.get_previous|length}}> 
-                        <a href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
+                        <a class="button" href={% url 'buswait:report_bus' busStop.id %} > report </a></td>
                     {% endif %}
             
                 </tr>
@@ -69,5 +68,5 @@
 	{% else %}
 		<p>ไม่พบข้อมูล</p>
     {% endif %}
-		<a href={% url 'buswait:index' %}>back</a>
+		<a class="button" href={% url 'buswait:index' %}>back</a>
 {% endblock %}

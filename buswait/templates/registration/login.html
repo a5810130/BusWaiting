@@ -1,0 +1,42 @@
+{% extends 'buswait/base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block header %}Login{% endblock %}
+
+{% block input %}
+<form  class="form-style-9" method="post" action="{% url 'buswait:login' %}">
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+{% csrf_token %}
+
+<center>
+<table>
+<tr>
+    <td>Username:</td>
+    <td>{{ form.username }}</td>
+</tr>
+<tr>
+    <td>Password:</td>
+    <td>{{ form.password }}</td>
+</tr>
+</table>
+</center>
+
+<input type="submit" value="login" />
+<a class="button" href={% url 'buswait:register' %}>register</a>
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+        <a class="button" href={% url 'buswait:about' %}>about</a>
+{% endblock %}
