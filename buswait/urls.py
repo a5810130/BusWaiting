@@ -15,4 +15,7 @@ urlpatterns = [
 	url(r'^register/$', views.register, name='register'),
 	url('^', include('django.contrib.auth.urls')),
 	url(r'^logout_success/$', views.logout_success, name='logout_success'),
+	url(r'^set_favorite_busstop/(?P<busstop>[^\n]+)/$', 
+	views.set_favorite_busstop, name='set_favorite_busstop'),
+	url(r'^set_favorite_bus/(?P<bus_id>[0-9]+)/$', views.set_favorite_bus, name='set_favorite_bus'),
 ]

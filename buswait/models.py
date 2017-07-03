@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 from itertools import chain
 from django.utils import timezone 
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Route(models.Model):
@@ -35,3 +36,11 @@ class BusStop(models.Model):
 			if (nextBusStop.name == filter):
 				return True
 		return False
+		
+class FavoriteBusStop(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	busstop = models.CharField(max_length=30)
+	
+class FavoriteBus(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	bus = models.ForeignKey(Route, on_delete=models.CASCADE)

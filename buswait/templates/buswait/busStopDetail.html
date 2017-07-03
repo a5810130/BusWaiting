@@ -10,6 +10,13 @@
 	{% if filter %}
 		<h2> to {{filter}} </h2>
 	{% endif %}
+		{% if user.is_authenticated and busStop_set %}
+		{% if favorite %}
+			<a href={% url 'buswait:set_favorite_busstop' busStopName %}>Remove favorite</a>
+		{% else %}
+			<a href={% url 'buswait:set_favorite_busstop' busStopName %}>Add favorite</a>
+		{% endif %}
+	{% endif %}<br>
 	Filter: <input type="text" name="filter" list="filter">
 	<datalist id="filter">
 		{% if busStop_datalist %}

@@ -6,6 +6,13 @@
 
 {% block table %}
 	<h2> {{busStop_set.first}} - {{busStop_set.last}} </h2>
+	{% if user.is_authenticated and busStop_set %}
+		{% if favorite %}
+			<a href={% url 'buswait:set_favorite_bus' busNumber.id %}>Remove favorite</a>
+		{% else %}
+			<a href={% url 'buswait:set_favorite_bus' busNumber.id %}>Add favorite</a>
+		{% endif %}
+	{% endif %}<br>
     {% if busStop_set %}
     <div class="datagrid">
         <table align="center" id="busStop_table">
@@ -29,7 +36,7 @@
         </table>
     </div>
     {% endif %}
-    <a href={% url 'buswait:index' %}>back</a>
+    <a class="button" href={% url 'buswait:index' %}>back</a>
 {% endblock %}
 
 {% block back %} <a href={% url 'buswait:index' %}>back</a> {% endblock %}

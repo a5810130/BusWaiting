@@ -17,6 +17,15 @@
 			{% endif %}
             </datalist>
             <input type="submit" value="submit">
+			{% if user.is_authenticated %}
+				<h3> Your Favorite </h3>
+				<div class="box">
+					{% for list in favorite_busstop %}
+						<ul><a href="{% url 'buswait:busStopDetail' %}?busStop={{list.busstop}}&filter=">
+						{{list.busstop}}</a></ul>
+					{% endfor %}
+				</div>
+			{% endif %}
         </form>
         
         <form class="form-style-9" action={% url 'buswait:busDetail' %} method="get">    
@@ -30,6 +39,15 @@
 			{% endif %}
             </datalist>
             <input type="submit" value="submit">
+			{% if user.is_authenticated %}
+				<h3> Your Favorite </h3>
+				<div class="box">
+					{% for list in favorite_bus %}
+						<ul><a href="{% url 'buswait:busDetail' %}?busNumber={{list.bus}}">
+						{{list.bus}}</a></ul>
+					{% endfor %}
+				</div>
+			{% endif %}
         </form>
         <a class="button" href={% url 'buswait:about' %}>about</a>
 {% endblock %}
