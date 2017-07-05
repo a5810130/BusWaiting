@@ -5,9 +5,12 @@
 {% block header %}BusWaiting App{% endblock %}
 
 {% block input %}
-    <form class="form-style-9" action={% url 'buswait:busStopDetail' %} method="get">    
+	<div style="width:60%;
+				margin: auto">
+		<form style="float:left; width:50%;" class="form-style-9" action={% url 'buswait:busStopDetail' %} method="get">    
         <h2>Location</h2>
-            <input list="busStops" name="busStop" autocomplete="off" placeholder="Bus Stop Name">
+            <input style="width: 70%;" list="busStops" name="busStop" autocomplete="off" placeholder="Bus Stop Name" >
+			<input type="submit" value="submit">
 			<input type="hidden" name="filter">
             <datalist id="busStops">
 			{% if busStop_set %}
@@ -15,8 +18,7 @@
                     <option value={{busstop.name}}>
                 {% endfor %}
 			{% endif %}
-            </datalist>
-            <input type="submit" value="submit">
+            </datalist>      
 			{% if user.is_authenticated %}
 				<h3> Your Favorite </h3>
 				<div class="box">
@@ -27,10 +29,9 @@
 				</div>
 			{% endif %}
         </form>
-        
-        <form class="form-style-9" action={% url 'buswait:busDetail' %} method="get">    
+        <form style="float:right; width:50%;" class="form-style-9" action={% url 'buswait:busDetail' %} method="get">    
             <h2>Bus Number</h2>
-            <input list="busNumbers" name="busNumber" autocomplete="off" placeholder="Bus Number">
+            <input style="width: 70%;" list="busNumbers" name="busNumber" autocomplete="off" placeholder="Bus Number">
             <datalist id="busNumbers">
 			{% if busStop_set %}
                 {% for bus in bus_set %}
@@ -49,5 +50,4 @@
 				</div>
 			{% endif %}
         </form>
-        <a class="button" href={% url 'buswait:about' %}>about</a>
 {% endblock %}

@@ -2,7 +2,18 @@
 
 {% block title %}{{ busStopName }}-{% endblock %}
 
-{% block header %}{{ busStopName }}{% endblock %}
+{% block header %}
+{{ busStopName }}
+{% if user.is_authenticated and busStop_set %}
+		<span>
+		{% if favorite %}
+			<a href={% url 'buswait:set_favorite_busstop' busStopName %} title="Remove Favorite"><span class="glyphicon glyphicon-star"></span></a>
+		{% else %}
+			<a href={% url 'buswait:set_favorite_busstop' busStopName %} title="Add Favorite"><span class="glyphicon glyphicon-star-empty"></a>
+		{% endif %}
+		</span>
+	{% endif %}
+{% endblock %}
 
 {% block table %}
 	<form method="get">
@@ -10,13 +21,6 @@
 	{% if filter %}
 		<h2> to {{filter}} </h2>
 	{% endif %}
-		{% if user.is_authenticated and busStop_set %}
-		{% if favorite %}
-			<a href={% url 'buswait:set_favorite_busstop' busStopName %}>Remove favorite</a>
-		{% else %}
-			<a href={% url 'buswait:set_favorite_busstop' busStopName %}>Add favorite</a>
-		{% endif %}
-	{% endif %}<br>
 	Filter: <input type="text" name="filter" list="filter">
 	<datalist id="filter">
 		{% if busStop_datalist %}
@@ -75,5 +79,5 @@
 	{% else %}
 		<p>ไม่พบข้อมูล</p>
     {% endif %}
-		<a class="button" href={% url 'buswait:index' %}>back</a>
+	<a class="button" href={% url 'buswait:index' %}>back</a>
 {% endblock %}

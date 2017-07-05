@@ -153,8 +153,18 @@ a.button:hover {
 
 .box {
 	height: 100px;
-	width: 400px;
+	width: 100%;
 	overflow: auto;
 	border: 4px solid #216288;
     border-radius: 10px;
+}
+
+.posleft{
+	float: left;
+	margin: auto;
+}
+
+.posright{
+	float: right;
+	margin: auto;
 }

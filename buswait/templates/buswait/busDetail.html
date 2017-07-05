@@ -2,17 +2,21 @@
 
 {% block title %}{{ busNumber }}-{% endblock %}
 
-{% block header %}{{ busNumber }}{% endblock %}
+{% block header %}
+{{ busNumber }}
+	{% if user.is_authenticated and busStop_set %}
+		<span>
+		{% if favorite %}
+			<a href={% url 'buswait:set_favorite_bus' busNumber.id %} title="Remove Favorite"><span class="glyphicon glyphicon-star"></span></a>
+		{% else %}
+			<a href={% url 'buswait:set_favorite_bus' busNumber.id %} title="Add Favorite"><span class="glyphicon glyphicon-star-empty"></a>
+		{% endif %}
+		</span>
+	{% endif %}
+{% endblock %}
 
 {% block table %}
-	<h2> {{busStop_set.first}} - {{busStop_set.last}} </h2>
-	{% if user.is_authenticated and busStop_set %}
-		{% if favorite %}
-			<a href={% url 'buswait:set_favorite_bus' busNumber.id %}>Remove favorite</a>
-		{% else %}
-			<a href={% url 'buswait:set_favorite_bus' busNumber.id %}>Add favorite</a>
-		{% endif %}
-	{% endif %}<br>
+	<h2> {{busStop_set.first}} - {{busStop_set.last}}</h2>
     {% if busStop_set %}
     <div class="datagrid">
         <table align="center" id="busStop_table">
@@ -38,5 +42,3 @@
     {% endif %}
     <a class="button" href={% url 'buswait:index' %}>back</a>
 {% endblock %}
-
-{% block back %} <a href={% url 'buswait:index' %}>back</a> {% endblock %}
