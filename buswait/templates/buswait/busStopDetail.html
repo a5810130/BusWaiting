@@ -21,7 +21,7 @@
 	{% if filter %}
 		<h2> to {{filter}} </h2>
 	{% endif %}
-	Filter: <input type="text" name="filter" list="filter">
+	Filter: <input type="text" id="filter" name="filter" list="filter">
 	<datalist id="filter">
 		{% if busStop_datalist %}
 			{% for busstop in busStop_datalist %}

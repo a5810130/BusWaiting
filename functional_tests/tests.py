@@ -20,6 +20,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
         columns = table.find_elements_by_tag_name('td')
         self.assertIn(bus_number, [column.text for column in columns])
     
+    def check_not_for_row_in_list_table(self, bus_number):
+        table = self.browser.find_element_by_id('bus_table')
+        columns = table.find_elements_by_tag_name('td')
+        self.assertNotEqual(bus_number, [column.text for column in columns])
+        
     def test_can_access_detail_and_report(self):
 		# สมปองอยู่ที่ป้ายรถเมย์
 		# เขาเข้าเว็บ buswaiting
@@ -73,6 +78,21 @@ class NewVisitorTest(StaticLiveServerTestCase):
 		# เขาพบกับหน้าแสดงข้อมูล
         header_text = self.browser.find_element_by_tag_name('h1').text
         self.assertIn("โรงเรียนสตรีนนทบุรี", header_text)
+        
+        # เขาพบข้อมูลของสาย 97 และ 203
+        self.check_for_row_in_list_table("97")
+        self.check_for_row_in_list_table("203")
+        
+        # เขาต้องการจะไป อนุสาวรีย์ชัยสมรภูมิ จึงใส่ในช่อง filter
+        inputbox = self.browser.find_element_by_name('filter')
+        inputbox.send_keys("อนุสาวรีย์ชัยสมรภูมิ")
+        inputbox.send_keys(Keys.ENTER)
+        
+        time.sleep(1)
+        
+        # เขาพบกับหน้าแสดงข้อมูลที่ถูกกรองแล้วมีเพียงสาย 97 
+        self.check_for_row_in_list_table("97")
+        self.check_not_for_row_in_list_table("203")
         
         # เขามองหาข้อมูลของสาย 97 และพบมีเวลาถูก report ที่ป้ายท่าน้ำนนท์ทบุรีไว้แล้ว
         table = self.browser.find_element_by_id("97")
